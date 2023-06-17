@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>ChatRoom</title>
+
+<style> <%- include('./styles'); %> </style>
+    
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function updateMessages() {
+            $.get("/messages", function (data) {
+                // Update the chat messages on the page
+                $("#chat-container").empty();
+                data.forEach(function (element) {
+                    var message = $("<div>", { class: "message" });
+                    message.append($("<p>", { class: "user", text: element.userName }));
+                    message.append($("<p>", { text: element.userMessage }));
+                    $("#chat-container").append(message);
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            // Call updateMessages every 1 second to fetch updates
+            setInterval(updateMessages, 1000);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="chat-wrapper">
+        <div id="chat-container">
+            <!-- Chat messages will be dynamically added here using JavaScript -->
+        </div>
+        <div id="input-container">
+            <form action="/" method="post">
+               
+                <input type="text" placeholder="Message" name="userMessage" id="user-message-input">
+                <button type="submit" id="send-button">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
